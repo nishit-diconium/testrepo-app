@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted
+    runs-on: subuntu-latest
     steps:
       - name: Azure login
         uses: azure/login@v2
