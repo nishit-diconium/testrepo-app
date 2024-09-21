@@ -1,0 +1,41 @@
+name: Build and Push Docker Image to ACR
+
+on:
+  push:
+    branches:
+      - main  # This workflow runs when code is pushed to the main branch
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Log in to Azure
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: |
+            {
+              "clientId": "bc5df0e5-bba6-4ed3-a5f9-6cfe6cf4c1ec",
+              "clientSecret": "a2cebba1-e83a-4e44-956b-708bbb93b0a1",
+              "tenantId": "1f2519d6-a33d-4336-abb5-8085bcb587d6"
+            }
+
+      # Step 3: Log in to ACR using Azure CLI
+      - name: Log in to ACR
+        run: |
+          az acr login --name kotlinappacr
+
+      # Step 4: Build and tag the Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t kotlinappacr.azurecr.io/kotlindeploymentimg:0.2 .
+
+      # Step 5: Push the Docker image to ACR
+      - name: Push Docker image
+        run: |
+          docker push kotlinappacr.azurecr.io/kotlindeploymentimg:0.2
