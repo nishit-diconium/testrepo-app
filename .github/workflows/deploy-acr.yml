@@ -30,4 +30,4 @@ jobs:
       # Step 5: Push the Docker image to ACR
     - name: Push Docker image
       run: |
-        docker push kotlinappacr.azurecr.io/kotlinimg:0.1
+        docker push kotlinappacr.azurecr.io/kotlinimg:latest
