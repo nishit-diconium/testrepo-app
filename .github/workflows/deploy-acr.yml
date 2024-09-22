@@ -13,3 +13,18 @@ jobs:
     - uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+      # Step 3: Log in to ACR using Azure CLI
+    - name: Log in to ACR
+      run: |
+        az acr login --name kotlinappacr
+
+      # Step 4: Build and tag the Docker image
+    - name: Build Docker image
+      run: |
+        docker build -t kotlinappacr.azurecr.io/kotlindeploymentimg:0.2 .
+
+      # Step 5: Push the Docker image to ACR
+    - name: Push Docker image
+      run: |
+        docker push kotlinappacr.azurecr.io/kotlindeploymentimg:0.2
