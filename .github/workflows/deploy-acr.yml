@@ -10,30 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Parse Azure Credentials
-        id: parse_creds
-        run: |
-          echo "::set-output name=client_id::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .clientId)"
-          echo "::set-output name=client_secret::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .clientSecret)"
-          echo "::set-output name=tenant_id::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .tenantId)"
-          echo "::set-output name=subscription_id::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .subscriptionId)"
-
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-      # Step 3: Log in to ACR using Azure CLI
-      - name: Log in to ACR
-        run: |
-          az acr login --name kotlinappacr
-
-      # Step 4: Build and tag the Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t kotlinappacr.azurecr.io/kotlindeploymentimg:0.2 .
-
-      # Step 5: Push the Docker image to ACR
-      - name: Push Docker image
-        run: |
-          docker push kotlinappacr.azurecr.io/kotlindeploymentimg:0.2
-
+    - uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
