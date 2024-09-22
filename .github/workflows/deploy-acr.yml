@@ -30,4 +30,5 @@ jobs:
       # Step 5: Push the Docker image to ACR
     - name: Push Docker image to Docker hub
       run: |
-        docker push kotlinappacr.azurecr.io/kotlinimg:latest
+        docker tag nishitdiconium/kotlinimg kotlinappacr.azurecr.io/kotlinimg:latest
+        docker push kotlinappacr.azurecr.io/kotlinimg
