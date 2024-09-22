@@ -25,9 +25,9 @@ jobs:
       # Step 4: Build and tag the Docker image
     - name: Build Docker image
       run: |
-        docker buildx build -t nishitdiconium/kotlinimg:latest .
+        docker buildx build -t nishitdiconium/kotlinimg:0.1 .
 
       # Step 5: Push the Docker image to ACR
     - name: Push Docker image
       run: |
-        docker push kotlinappacr.azurecr.io/kotlinimg
+        docker push kotlinappacr.azurecr.io/kotlinimg:0.1
