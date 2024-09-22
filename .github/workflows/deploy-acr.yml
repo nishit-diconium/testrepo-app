@@ -6,18 +6,22 @@ on:
       - main  # This workflow runs when code is pushed to the main branch
 
 jobs:
-  build-and-deploy:
-    runs-on: subuntu-latest
-    steps:
-      - name: Azure login
-        uses: azure/login@v2
-        with:
-          auth-type: IDENTITY
-          client-id: "bc5df0e5-bba6-4ed3-a5f9-6cfe6cf4c1ec"
-          tenant-id: "1f2519d6-a33d-4336-abb5-8085bcb587d6"
-          subscription-id: "36d3e50f-36c2-4f2d-bc9a-951b924a65bd"
-          enable-AzPSSession: true
+  build-and-push:
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Parse Azure Credentials
+        id: parse_creds
+        run: |
+          echo "::set-output name=client_id::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .clientId)"
+          echo "::set-output name=client_secret::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .clientSecret)"
+          echo "::set-output name=tenant_id::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .tenantId)"
+          echo "::set-output name=subscription_id::$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r .subscriptionId)"
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
       # Step 3: Log in to ACR using Azure CLI
       - name: Log in to ACR
         run: |
@@ -32,3 +36,4 @@ jobs:
       - name: Push Docker image
         run: |
           docker push kotlinappacr.azurecr.io/kotlindeploymentimg:0.2
+
