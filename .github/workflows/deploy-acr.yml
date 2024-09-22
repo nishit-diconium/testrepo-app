@@ -22,7 +22,7 @@ jobs:
       # Step 4: Build and tag the Docker image
     - name: Build Docker image
       run: |
-        docker build -t kotlinappacr.azurecr.io/kotlindeploymentimg:0.2 .
+        docker build -t kotlinappacr.azurecr.io/kotlindeploymentimg:0.2 . -f Dockerfile
 
       # Step 5: Push the Docker image to ACR
     - name: Push Docker image
