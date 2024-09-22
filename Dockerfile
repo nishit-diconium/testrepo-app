@@ -9,12 +9,3 @@ FROM openjdk:17-slim
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar /app/app.jar
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
-
-#step 3
-FROM openjdk:8-jdk-alpine
-VOLUME /tmp
-ARG DEPENDENCY=build/dependency
-COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY ${DEPENDENCY}/META-INF /app/META-INF
-COPY ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","com.adrenadev.tutorial.main.MainApplicationKt"]
